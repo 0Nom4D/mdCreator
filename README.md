@@ -7,7 +7,7 @@ mdCreator is connected to the Tenor API to get Gifs.
 
 ![GitHub](https://img.shields.io/github/license/0Nom4D/mdCreator?style=flat-square)
 
-This project is under the protection of the MIT License. Don't do dumb things.<br/>
+This project is under the jurisdiction of the MIT License. Don't do dumb things.<br/>
 
 ![Alt Text](https://media.tenor.com/images/4dc761d53f5bad9863d64de1e6cd8db4/tenor.gif)<br/>
 
