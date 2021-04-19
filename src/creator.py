@@ -106,10 +106,9 @@ class mdCreator:
 
     def printCodingStyle(self):
         return ({
-            "Python": noStyle,
-            "C": cStyle,
-            "Haskell": haskellStyle
-        }.get(self.language, self.language + " hasn't been found.")(self.fileDesc, self.language, self.project))
+            "c": cStyle,
+            "haskell": haskellStyle
+        }.get(self.language.lower(), noStyle)(self.fileDesc, self.language, self.project))
 
     #Gifs Tenor API
     def getGifsUrl(self):
