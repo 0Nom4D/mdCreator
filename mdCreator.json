@@ -5,7 +5,7 @@
       "description": " is a new project."
   },
   "disclaimer": {
-      "range": -2,
+      "range": 2,
       "title": "Before continuing...",
       "description": "This project is an EPITECH Project. If you are an EPITECH student, move out the way! Nothing to see here... The groups don't want to be involved to your -42.<br/>If you're not, no worries! You're welcome here!"
   },
