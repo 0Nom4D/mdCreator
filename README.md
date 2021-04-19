@@ -1,0 +1,62 @@
+# mdCreator
+
+mdCreator is a Python project. mdCreator can create a README.md file using basic Python functionalities.<br>
+mdCreator is connected to the Tenor API to get Gifs.
+
+## Before continuing...
+
+![GitHub](https://img.shields.io/github/license/0Nom4D/mdCreator?style=flat-square)
+
+This project is under the protection of the MIT License. Don't do dumb things.<br/>
+
+![Alt Text](https://media.tenor.com/images/4dc761d53f5bad9863d64de1e6cd8db4/tenor.gif)<br/>
+
+### Prerequisites
+
+To use this project, you'll need Python (Version 3.8):
+
+* [Python Installation](https://www.python.org/downloads/)
+
+### Building program
+
+mdCreator is a little Python Script dedicated to help programmers to not spend 4 hours creating a README.md.<br>
+Created README.md is perfectly customisable using a .json configuration file.
+
+mdCreator works as it follows:
+```
+$> mdCreator --pname <Project Name> -l <Project's Main Language>
+```
+
+You can have access to every options, you can use ```-h / --help``` option or read the table below.
+
+| Options                   | Action                                            |
+| ------------------------- |:-------------------------------------------------:|
+| -p / --pname Name         | Project Name                                      |
+| -l / --language Language  | Project's Main Language                           |
+| -a / --array              | Create a table in your README.md                  |
+| -g / --gif [Keywords ...] | Add Gifs corresponding to the keywords you give   |
+
+You can also change the written categories by changing the mdCreator.json configuration file by adding / removing the categories.<br>
+Please use the following syntax while adding categories:
+```
+{
+  "authors": {
+      "range": 2,
+      "title": "My new title",
+      "description": "My new description"
+  }
+}
+
+where
+    range is the size of the title to add to the README: 1 is the biggest, 3 is the smallest
+```
+
+### Coding Style
+
+mdCreator is developed with Python. There's not a real coding style but I tried being the cleaner possible.
+
+## Authors
+
+* **Arthur Adam** - [0Nom4D](https://github.com/0Nom4D)
+
+See also the list of [contributors](https://github.com/0Nom4D/mdCreator/graphs/contributors) who participated in this project.
