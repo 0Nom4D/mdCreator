@@ -17,6 +17,9 @@ To use this project, you'll need Python (Version 3.8):
 
 * [Python Installation](https://www.python.org/downloads/)
 
+Please refer to this link in order to install ```requests python 3 module```:
+* [Python Requests Module Installation](https://stackoverflow.com/questions/17309288/importerror-no-module-named-requests)
+
 ### Building program
 
 mdCreator is a little Python Script dedicated to help programmers to not spend 4 hours creating a README.md.<br>
