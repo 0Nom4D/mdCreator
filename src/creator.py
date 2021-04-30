@@ -33,6 +33,7 @@ class mdCreator:
             self.fileDesc.write("\n")
         if self.array == True:
             self.printArray()
+        self.fileDesc.write("\n\nThis README file has been created with mdCreator. [Please check the project by clicking this link](https://github.com/0Nom4D/mdCreator/)")
         self.fileDesc.close()
         print("\nREADME.md created.")
         print("Don't forget to edit your README.md file if something's wrong with the existing file.")

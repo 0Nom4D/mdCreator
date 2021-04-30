@@ -26,21 +26,23 @@ mdCreator is a little Python Script dedicated to help programmers to not spend 4
 Created README.md is perfectly customisable using a .json configuration file.
 
 mdCreator works as it follows:
+
 ```
 $> mdCreator --pname <Project Name> -l <Project's Main Language>
 ```
 
 You can have access to every options, you can use ```-h / --help``` option or read the table below.
 
-| Options                   | Action                                            |
-| ------------------------- |:-------------------------------------------------:|
-| -p / --pname Name         | Project Name                                      |
-| -l / --language Language  | Project's Main Language                           |
-| -a / --array              | Create a table in your README.md                  |
-| -g / --gif [Keywords ...] | Add Gifs corresponding to the keywords you give   |
+| Options                   | Action                                            |  Mandatory         |
+| ------------------------- |:-------------------------------------------------:|:------------------:|
+| -p / --pname Name         | Project Name                                      | &#9745;            |
+| -l / --language Language  | Project's Main Language                           | &#9745;            |
+| -a / --array              | Create a table in your README.md                  | &#9744;            |
+| -g / --gif [Keywords ...] | Add Gifs corresponding to the keywords you give   | &#9744;            |
 
 You can also change the written categories by changing the mdCreator.json configuration file by adding / removing the categories.<br>
 Please use the following syntax while adding categories:
+
 ```
 {
   "authors": {
@@ -53,6 +55,8 @@ Please use the following syntax while adding categories:
 where
     range is the size of the title to add to the README: 1 is the biggest, 3 is the smallest
 ```
+
+**For more informations about configuration file, please check the [mdCreator wiki](https://github.com/0Nom4D/mdCreator/wiki/Configuration-File)!**
 
 ### Coding Style
 
