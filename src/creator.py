@@ -2,8 +2,8 @@
 
 from style import *
 import requests
-import os.path
 import json
+import os
 
 class mdCreator:
     def __init__(self, gifAttr, projName, usedLang, arrOpt):
@@ -73,14 +73,19 @@ class mdCreator:
 
     #README.md Sections
     def addSections(self):
+        configFile = []
         _range = 0
         i = 0
 
         try:
-            config = open("mdCreator.json", "r")
+            configFile = find_config("mdCreator.json", os.getenv('HOME'))
+            config = open(configFile, "r")
             cfg = json.load(config)
             for lib in cfg:
                 self.writeSection(cfg, lib)
+        except KeyError as err:
+            print("Fatal Error: " + str(err.args[0]))
+            exit(1)
         except Exception as err:
             print("Fatal Error: " + str(err.args[0]))
             exit(1)
@@ -127,3 +132,8 @@ class mdCreator:
             print("Reason: " + str(r.content))
             exit(1)
         return gifsUrls
+
+def find_config(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
