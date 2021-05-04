@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 
-from style import *
+from codingStyle import *
 import requests
 import json
 import os
 
+def find_config(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return (os.path.join(root, name))
+    return ("")
+
 class mdCreator:
-    def __init__(self, gifAttr, projName, usedLang, arrOpt):
+    def __init__(self, projName, usedLang, gifAttr, arrOpt):
         self.project = projName
         if gifAttr is None:
             self.gifAttr = ""
@@ -93,7 +99,7 @@ class mdCreator:
     def writeSection(self, cfg, lib):
         _range = cfg[lib]["range"]
         if _range < 1:
-            print("mdCreator stopped: the " + str(lib) + "'s range is negative. Range must be between 1 and 3.")
+            print("mdCreator stopped: the " + str(lib) + "'s range is negative. Range must be positive and higher than 0.")
             exit(1)
         while _range != 0:
             self.fileDesc.write("#")
@@ -131,9 +137,4 @@ class mdCreator:
             print("HTTP Request Error: " + str(r.status_code))
             print("Reason: " + str(r.content))
             exit(1)
-        return gifsUrls
-
-def find_config(name, path):
-    for root, dirs, files in os.walk(path):
-        if name in files:
-            return os.path.join(root, name)
+        return (gifsUrls)

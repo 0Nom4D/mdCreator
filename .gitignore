@@ -1,2 +1,7 @@
 #Folders
+.pytest_cache
 __pycache__
+.cache
+
+#File Extensions
+*.pyc
