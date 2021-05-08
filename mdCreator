@@ -1,3 +1,4 @@
 #!/bin/bash
 
+./auto_update.sh
 ./src/main.py $@
