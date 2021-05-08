@@ -1,4 +1,5 @@
 #!/bin/bash
 
 ./auto_update.sh
+printf "${GREEN}Launching...\n${NC}"
 ./src/main.py $@

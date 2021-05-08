@@ -8,14 +8,12 @@ NC='\033[0m' # No Color
 
 function up_to_date {
     printf "${RED}mdCreator is up-to-date\n${NC}"
-    printf "${GREEN}Launching...\n${NC}"
 }
 
 function update {
     printf "${ORANGE}Updating mdCreator...\n${NC}"
     git pull
     printf "${GREEN}mdCreator updated!\n${NC}"
-    printf "${GREEN}Launching...\n${NC}"
 }
 
 printf "${RED}${BLINK}Checking for updates...\n${NC}"
