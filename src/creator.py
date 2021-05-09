@@ -91,10 +91,12 @@ class mdCreator:
             for lib in cfg:
                 self.writeSection(cfg, lib)
         except KeyError as err:
-            print("Fatal Error: " + str(err.args))
+            x, y = err.args
+            print(x + ": " + y)
             exit(1)
         except Exception as err:
-            print("Fatal Error: " + str(err.args))
+            x, y = err.args
+            print(x + ": " + y)
             exit(1)
 
     def writeSection(self, cfg, section):
@@ -108,7 +110,7 @@ class mdCreator:
             if section == "gifs":
                 self.setGifNumber(cfg, section)
                 return (0)
-            raise Exception("Range is not set for " + str(section) + " section.")
+            raise Exception("RangeError", "Range is not set for " + str(section) + " section.")
         return self.redirectSections(secRange, cfg, section)
 
     def detect_section(self, secRange, cfg, section):
@@ -118,7 +120,7 @@ class mdCreator:
 
     def redirectSections(self, secRange, cfg, section):
         if secRange < 1:
-            raise Exception("Range must be higher than 0 for " + str(section) + " section.")
+            raise Exception("RangeError", "Range must be higher than 0 for " + str(section) + " section.")
         while secRange != 0:
             self.fileDesc.write("#")
             secRange -= 1
@@ -142,6 +144,8 @@ class mdCreator:
 
     #Gifs Tenor API
     def setGifNumber(self, cfg, section):
+        if cfg[section]["nbGifs"] < 1:
+            raise Exception("GifsError", "nbGifs value must be higher than 0 in gifs sections!")
         self.nbGifs = cfg[section]["nbGifs"]
 
     def getGifsUrl(self):
