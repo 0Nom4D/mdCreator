@@ -21,6 +21,7 @@ class mdCreator:
         self.language = usedLang
         self.fileDesc = None
         self.array = arrOpt
+        self.nbGifs = 2
 
     #Main Loop
     def launchCreator(self):
@@ -71,7 +72,7 @@ class mdCreator:
                     else:
                         continue
                 except EOFError as inputError:
-                    print()
+                    print("mdCreator Stopped - creator.py: l.75")
                     exit(1)
         else:
             self.fileDesc = open("README.md", "w")
@@ -90,30 +91,47 @@ class mdCreator:
             for lib in cfg:
                 self.writeSection(cfg, lib)
         except KeyError as err:
-            print("Fatal Error: " + str(err.args[0]))
+            print("Fatal Error: " + str(err.args))
             exit(1)
         except Exception as err:
-            print("Fatal Error: " + str(err.args[0]))
+            print("Fatal Error: " + str(err.args))
             exit(1)
 
-    def writeSection(self, cfg, lib):
-        _range = cfg[lib]["range"]
-        if _range < 1:
-            print("mdCreator stopped: the " + str(lib) + "'s range is negative. Range must be positive and higher than 0.")
-            exit(1)
-        while _range != 0:
+    def writeSection(self, cfg, section):
+        secRange = 0
+
+        try:
+            secRange = cfg[section]["range"]
+        except:
+            secRange = None
+        if self.detect_section(secRange, cfg, section) == False:
+            if section == "gifs":
+                self.setGifNumber(cfg, section)
+                return (0)
+            raise Exception("Range is not set for " + str(section) + " section.")
+        return self.redirectSections(secRange, cfg, section)
+
+    def detect_section(self, secRange, cfg, section):
+        if secRange is None:
+            return False
+        return True
+
+    def redirectSections(self, secRange, cfg, section):
+        if secRange < 1:
+            raise Exception("Range must be higher than 0 for " + str(section) + " section.")
+        while secRange != 0:
             self.fileDesc.write("#")
-            _range -= 1
-        if lib == "header":
+            secRange -= 1
+        if section == "header":
             self.fileDesc.write(" " + self.project + "\n\n")
-        elif cfg[lib]["title"] is not None:
-            self.fileDesc.write(" " + cfg[lib]["title"] + "\n\n")
-        if lib == "style":
+        elif cfg[section]["title"] is not None:
+            self.fileDesc.write(" " + cfg[section]["title"] + "\n\n")
+        if section == "style":
             self.printCodingStyle()
-        elif cfg[lib]["description"][0] == ' ':
-            self.fileDesc.write(self.project + cfg[lib]["description"] + "\n\n")
+        elif cfg[section]["description"][0] == ' ':
+            self.fileDesc.write(self.project + cfg[section]["description"] + "\n\n")
         else:
-            self.fileDesc.write(cfg[lib]["description"] + "\n\n")
+            self.fileDesc.write(cfg[section]["description"] + "\n\n")
         return (0)
 
     def printCodingStyle(self):
@@ -123,11 +141,14 @@ class mdCreator:
         }.get(self.language.lower(), noStyle)(self.fileDesc, self.language, self.project))
 
     #Gifs Tenor API
+    def setGifNumber(self, cfg, section):
+        self.nbGifs = cfg[section]["nbGifs"]
+
     def getGifsUrl(self):
         apikey = "CSGXSUKBREYZ"
         gifsUrls = []
 
-        r = requests.get("https://g.tenor.com/v1/search?q=%s&key=%s&limit=%s&media_filter=%s" % (self.gifAttr, apikey, 2, "minimal"))
+        r = requests.get("https://g.tenor.com/v1/search?q=%s&key=%s&limit=%s&media_filter=%s" % (self.gifAttr, apikey, self.nbGifs, "minimal"))
         if r.status_code == 200 or r.status_code == 202:
             values = json.loads(r.content)
             for gif in values["results"]:

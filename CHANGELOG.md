@@ -7,9 +7,19 @@ Here we write upgrading notes for brands. It's a team effort to make them as
 straightforward as possible.
 
 ### Added
-- Configuration file can now edit the number of GIF retrieved by Tenor Gif API
 
 ### Changed
+
+### Fixed
+
+## [1.0.2] - 2021-05-09
+
+### Added
+- mdCreator is now auto-updated when you launch it. It will take a little time before launching!
+- Changelog is now here! You can follow the next updates here! Cya!
+
+### Changed
+- Configuration file can now edit the number of GIF retrieved by Tenor Gif API.
 
 ### Fixed
 

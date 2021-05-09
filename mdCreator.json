@@ -27,5 +27,8 @@
       "range": 2,
       "title": "Authors",
       "description": "* **Arthur Adam** - [0Nom4D](https://github.com/0Nom4D)"
+  },
+  "gifs": {
+    "nbGifs": 5
   }
 }
