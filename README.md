@@ -66,4 +66,6 @@ mdCreator is developed with Python. There's not a real coding style but I tried 
 
 * **Arthur Adam** - [0Nom4D](https://github.com/0Nom4D)
 
-See also the list of [contributors](https://github.com/0Nom4D/mdCreator/graphs/contributors) who participated in this project.
+## Contributors
+
+[![](https://contrib.rocks/image?repo=0Nom4D/mdCreator)](https://github.com/0Nom4D/mdCreator/graphs/contributors)
