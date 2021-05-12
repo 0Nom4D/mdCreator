@@ -11,8 +11,7 @@
   },
   "prerequisites": {
       "range": 3,
-      "title": "Prerequisites",
-      "description": "To use this project, you'll need Python (Version 3.8):\n\n* [Python Installation](https://www.python.org/downloads/)"
+      "title": "Prerequisites"
   },
   "program": {
       "range": 3,
