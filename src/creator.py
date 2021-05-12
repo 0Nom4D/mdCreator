@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from codingStyle import *
+from prerequisites import *
 import requests
 import json
 import os
@@ -128,13 +129,24 @@ class mdCreator:
             self.fileDesc.write(" " + self.project + "\n\n")
         elif cfg[section]["title"] is not None:
             self.fileDesc.write(" " + cfg[section]["title"] + "\n\n")
+        
         if section == "style":
             self.printCodingStyle()
+        elif section == "prerequisites":
+            self.printPrerequisites()
         elif cfg[section]["description"][0] == ' ':
             self.fileDesc.write(self.project + cfg[section]["description"] + "\n\n")
         else:
             self.fileDesc.write(cfg[section]["description"] + "\n\n")
         return (0)
+
+    def printPrerequisites(self):
+        return({
+            "c++": cPlusPlusPrerequisites,
+            "c": cPrerequisites,
+            "python": pythonPrerequisites,
+            "haskell": haskellPrerequisites
+        }.get(self.language.lower(), noPrerequisites)(self.fileDesc))
 
     def printCodingStyle(self):
         return ({
