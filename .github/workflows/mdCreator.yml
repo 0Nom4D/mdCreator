@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: mdCreator CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  mdCreatorBuild:
+    name: Test launch mdCreator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+          python-version: 3.8
+          # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
+          token: ${{ github.token }}
+
+      - name: Install Python depedencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-pip
+          sudo pip install requests
+
+      - name: Run mdCreator
+        run: ./mdCreator -p GithubActions -al C++ -g Evil Beware we have waffles
+          
