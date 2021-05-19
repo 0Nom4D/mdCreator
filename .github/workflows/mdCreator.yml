@@ -2,7 +2,7 @@
 
 name: mdCreator CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -35,5 +35,4 @@ jobs:
           sudo pip3 install requests
 
       - name: Run mdCreator
-        run: ./mdCreator -p GithubActions -al C++ -g Evil Beware we have waffles
-          
+        run: echo -ne "y" | ./mdCreator -p GithubActions -al C++ -g Evil Beware we have waffles

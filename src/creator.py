@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
+from prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, noPrerequisites
 from codingStyle import *
-from prerequisites import *
 import requests
 import json
 import os
@@ -39,7 +39,7 @@ class mdCreator:
                 self.fileDesc.write("![Alt Text](" + gifList[index] + ")<br/>\n")
                 index += 1
             self.fileDesc.write("\n")
-        if self.array == True:
+        if self.array is True:
             self.printArray()
         self.fileDesc.write("\n\nThis README file has been created with mdCreator. [Please check the project by clicking this link](https://github.com/0Nom4D/mdCreator/)")
         self.fileDesc.close()
@@ -82,8 +82,6 @@ class mdCreator:
     #README.md Sections
     def addSections(self):
         configFile = []
-        _range = 0
-        i = 0
 
         try:
             configFile = find_config("mdCreator.json", os.getenv('HOME'))
@@ -92,8 +90,8 @@ class mdCreator:
             for lib in cfg:
                 self.writeSection(cfg, lib)
         except KeyError as err:
-            x, y = err.args
-            print(x + ": " + y)
+            (x,) = err.args
+            print("KeyError: " + x)
             exit(1)
         except Exception as err:
             x, y = err.args
@@ -107,14 +105,14 @@ class mdCreator:
             secRange = cfg[section]["range"]
         except:
             secRange = None
-        if self.detect_section(secRange, cfg, section) == False:
+        if self.detect_section(secRange) is False:
             if section == "gifs":
                 self.setGifNumber(cfg, section)
                 return (0)
             raise Exception("RangeError", "Range is not set for " + str(section) + " section.")
         return self.redirectSections(secRange, cfg, section)
 
-    def detect_section(self, secRange, cfg, section):
+    def detect_section(self, secRange):
         if secRange is None:
             return False
         return True
@@ -129,7 +127,6 @@ class mdCreator:
             self.fileDesc.write(" " + self.project + "\n\n")
         elif cfg[section]["title"] is not None:
             self.fileDesc.write(" " + cfg[section]["title"] + "\n\n")
-        
         if section == "style":
             self.printCodingStyle()
         elif section == "prerequisites":
