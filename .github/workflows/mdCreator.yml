@@ -29,6 +29,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install python3-pip
+          sudo apt-get install python3-requests
           sudo pip install requests
 
       - name: Run mdCreator
