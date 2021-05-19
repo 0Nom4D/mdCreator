@@ -30,6 +30,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install python3-pip
           sudo apt-get install python3-requests
+          python -m pip install requests
           sudo pip install requests
           sudo pip3 install requests
 
