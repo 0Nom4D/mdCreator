@@ -5,7 +5,7 @@ def cPlusPlusPrerequisites(fileDesc):
     return (0)
 
 def pythonPrerequisites(fileDesc):
-    fileDesc.write("To use this project, you'll need Python (Version 3.8):\n\n* [Python Installation](https://www.python.org/downloads/)\n")
+    fileDesc.write("To use this project, you'll need Python (Version 3.8):\n\n* [Python Installation](https://www.python.org/downloads/)\n\n")
     return (0)
 
 def cPrerequisites(fileDesc):
@@ -13,7 +13,7 @@ def cPrerequisites(fileDesc):
     return (0)
 
 def haskellPrerequisites(fileDesc):
-    fileDesc.write("To use this project, you'll need Stack:\n\n* [Stack Installation Guide](https://docs.haskellstack.org/en/stable/install_and_upgrade/)\n")
+    fileDesc.write("To use this project, you'll need Stack:\n\n* [Stack Installation Guide](https://docs.haskellstack.org/en/stable/install_and_upgrade/)\n\n")
     return (0)
 
 def noPrerequisites(fileDesc):

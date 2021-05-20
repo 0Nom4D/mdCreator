@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, noPrerequisites
-from codingStyle import *
+from codingStyle import cStyle, haskellStyle, noStyle
 import requests
 import json
 import os
@@ -94,7 +94,7 @@ class mdCreator:
             print("KeyError: " + x)
             exit(1)
         except Exception as err:
-            x, y = err.args
+            x, y = err.args[:2]
             print(x + ": " + y)
             exit(1)
 
@@ -103,7 +103,7 @@ class mdCreator:
 
         try:
             secRange = cfg[section]["range"]
-        except:
+        except KeyError:
             secRange = None
         if self.detect_section(secRange) is False:
             if section == "gifs":
