@@ -22,6 +22,7 @@ class mdCreator:
         self.language = usedLang
         self.fileDesc = None
         self.array = arrOpt
+        self.isStudent = False
         self.nbGifs = 2
 
     #Main Loop
@@ -30,6 +31,7 @@ class mdCreator:
         index = 0
         value = 0
 
+        self.checkStudent()
         self.checkExisting()
         self.addSections()
         if self.gifAttr != "":
@@ -58,6 +60,14 @@ class mdCreator:
 | Key 5      | Opt5          |\n\
 | Key 6      | Opt6          |\n\
 | Key 7      | Opt7          |\n")
+
+    def checkStudent(self):
+        inputStr = ""
+        while inputStr != "y" and inputStr != "n":
+            inputStr = input("Are you a Epitech Student ? [y/n] ").lower()
+            inputStr = inputStr if inputStr == "y" or inputStr == "n" else ""
+        if inputStr == "y":
+            self.isStudent = True
 
     def checkExisting(self):
         if os.path.isfile("README.md"):
@@ -101,6 +111,8 @@ class mdCreator:
     def writeSection(self, cfg, section):
         secRange = 0
 
+        if section == "disclaimer" and not self.isStudent:
+            return 0
         try:
             secRange = cfg[section]["range"]
         except KeyError:

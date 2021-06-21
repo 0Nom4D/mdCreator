@@ -5,3 +5,4 @@ __pycache__
 
 #File Extensions
 *.pyc
+*.md
