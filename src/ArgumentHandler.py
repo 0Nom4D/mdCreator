@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import sys
 
 def parseArgs(args):
     parser = argparse.ArgumentParser(prog="mdCreator", description='Options Parser for mdCreator')

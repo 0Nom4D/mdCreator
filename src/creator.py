@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, noPrerequisites
-from codingStyle import cStyle, haskellStyle, noStyle
-import requests
+from Prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, noPrerequisites
+from CodingStyle import cStyle, haskellStyle, noStyle
+from ApiLoader import ApiLoader
 import json
 import os
 
@@ -22,7 +22,9 @@ class mdCreator:
         self.language = usedLang
         self.fileDesc = None
         self.array = arrOpt
-        self.nbGifs = 2
+
+        self.student = False
+        self.apiLoader = ApiLoader(url="https://g.tenor.com/v1/search?", search=gifAttr, limit=2)
 
     #Main Loop
     def launchCreator(self):
@@ -32,11 +34,11 @@ class mdCreator:
 
         self.checkExisting()
         self.addSections()
-        if self.gifAttr != "":
+        if self.apiLoader.build:
             self.fileDesc.write("## Asked GIFS\n\n")
-            gifList = self.getGifsUrl()
+            gifList = self.apiLoader.searchGifs()
             while index < len(gifList):
-                self.fileDesc.write("![Alt Text](" + gifList[index] + ")<br/>\n")
+                self.fileDesc.write("![Alt Text](" + gifList[index] + ")\n")
                 index += 1
             self.fileDesc.write("\n")
         if self.array is True:
@@ -93,10 +95,6 @@ class mdCreator:
             (x,) = err.args
             print("KeyError: " + x)
             exit(1)
-        except Exception as err:
-            x, y = err.args[:2]
-            print(x + ": " + y)
-            exit(1)
 
     def writeSection(self, cfg, section):
         secRange = 0
@@ -107,7 +105,8 @@ class mdCreator:
             secRange = None
         if self.detect_section(secRange) is False:
             if section == "gifs":
-                self.setGifNumber(cfg, section)
+                self.apiLoader.limit = int(cfg[section]["nbGifs"])
+                self.apiLoader.buildUrl()
                 return (0)
             raise Exception("RangeError", "Range is not set for " + str(section) + " section.")
         return self.redirectSections(secRange, cfg, section)
@@ -151,24 +150,3 @@ class mdCreator:
             "haskell": haskellStyle
         }.get(self.language.lower(), noStyle)(self.fileDesc, self.language, self.project))
 
-    #Gifs Tenor API
-    def setGifNumber(self, cfg, section):
-        if cfg[section]["nbGifs"] < 1:
-            raise Exception("GifsError", "nbGifs value must be higher than 0 in gifs sections!")
-        self.nbGifs = cfg[section]["nbGifs"]
-
-    def getGifsUrl(self):
-        apikey = "CSGXSUKBREYZ"
-        gifsUrls = []
-
-        r = requests.get("https://g.tenor.com/v1/search?q=%s&key=%s&limit=%s&media_filter=%s" % (self.gifAttr, apikey, self.nbGifs, "minimal"))
-        if r.status_code == 200 or r.status_code == 202:
-            values = json.loads(r.content)
-            for gif in values["results"]:
-                for media in gif["media"]:
-                    gifsUrls.append(media["gif"]["url"])
-        else:
-            print("HTTP Request Error: " + str(r.status_code))
-            print("Reason: " + str(r.content))
-            exit(1)
-        return (gifsUrls)
