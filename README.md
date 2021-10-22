@@ -5,7 +5,7 @@ mdCreator is connected to the Tenor API to get Gifs.
 
 ## Before continuing
 
-[![CodeFactor](https://www.codefactor.io/repository/github/0nom4d/mdcreator/badge/master)](https://www.codefactor.io/repository/github/0nom4d/mdcreator/overview/master) ![GitHub](https://img.shields.io/github/license/0Nom4D/mdCreator?style=flat-square)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=0Nom4D_mdCreator&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=0Nom4D_mdCreator) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=0Nom4D_mdCreator&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=0Nom4D_mdCreator) ![GitHub](https://img.shields.io/github/license/0Nom4D/mdCreator?style=flat-square) [![Documentation](https://img.shields.io/badge/Documentation-PDoc3-blue?style=flat-square)](https://0nom4d.github.io/mdCreator/)
 
 This project is under the jurisdiction of the MIT License. Don't do dumb things.
 
