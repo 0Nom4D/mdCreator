@@ -6,7 +6,7 @@ from sources.ApiLoader.ApiLoader import ApiLoader
 import json
 import os
 
-def find_config(name, path) -> str:
+def findConfig(name, path) -> str:
     """
     Find recursively a file in a directory.
 
@@ -177,7 +177,7 @@ class mdCreator:
         configFile = []
 
         try:
-            configFile = find_config("mdCreator.json", os.getenv('HOME'))
+            configFile = findConfig("mdCreator.json", os.getenv('HOME'))
             config = open(configFile, "r")
             cfg = json.load(config)
             for lib in cfg:
@@ -208,7 +208,7 @@ class mdCreator:
             secRange = cfg[section]["range"]
         except KeyError:
             secRange = None
-        if self.detect_section(secRange) is False:
+        if self.detectSection(secRange) is False:
             if section == "gifs":
                 self.apiLoader.setLimit(int(cfg[section]["nbGifs"]))
                 self.apiLoader.buildUrl()
@@ -216,7 +216,7 @@ class mdCreator:
             raise RangeError("Range is not set for " + str(section) + " section.")
         return self.redirectSections(secRange, cfg, section)
 
-    def detect_section(self, secRange) -> bool:
+    def detectSection(self, secRange) -> bool:
         """
         Detect if the section has a range.
 

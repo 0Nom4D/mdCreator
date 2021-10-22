@@ -34,7 +34,7 @@ from sources.ApiLoader.ApiLoader import ApiLoader
 import json
 import os
 
-def find_config(name, path) -&gt; str:
+def findConfig(name, path) -&gt; str:
     &#34;&#34;&#34;
     Find recursively a file in a directory.
 
@@ -205,7 +205,7 @@ class mdCreator:
         configFile = []
 
         try:
-            configFile = find_config(&#34;mdCreator.json&#34;, os.getenv(&#39;HOME&#39;))
+            configFile = findConfig(&#34;mdCreator.json&#34;, os.getenv(&#39;HOME&#39;))
             config = open(configFile, &#34;r&#34;)
             cfg = json.load(config)
             for lib in cfg:
@@ -236,7 +236,7 @@ class mdCreator:
             secRange = cfg[section][&#34;range&#34;]
         except KeyError:
             secRange = None
-        if self.detect_section(secRange) is False:
+        if self.detectSection(secRange) is False:
             if section == &#34;gifs&#34;:
                 self.apiLoader.setLimit(int(cfg[section][&#34;nbGifs&#34;]))
                 self.apiLoader.buildUrl()
@@ -244,7 +244,7 @@ class mdCreator:
             raise RangeError(&#34;Range is not set for &#34; + str(section) + &#34; section.&#34;)
         return self.redirectSections(secRange, cfg, section)
 
-    def detect_section(self, secRange) -&gt; bool:
+    def detectSection(self, secRange) -&gt; bool:
         &#34;&#34;&#34;
         Detect if the section has a range.
 
@@ -325,8 +325,8 @@ class mdCreator:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sources.Creator.find_config"><code class="name flex">
-<span>def <span class="ident">find_config</span></span>(<span>name, path) ‑> str</span>
+<dt id="sources.Creator.findConfig"><code class="name flex">
+<span>def <span class="ident">findConfig</span></span>(<span>name, path) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Find recursively a file in a directory.</p>
@@ -346,7 +346,7 @@ class mdCreator:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def find_config(name, path) -&gt; str:
+<pre><code class="python">def findConfig(name, path) -&gt; str:
     &#34;&#34;&#34;
     Find recursively a file in a directory.
 
@@ -577,7 +577,7 @@ class mdCreator:
         configFile = []
 
         try:
-            configFile = find_config(&#34;mdCreator.json&#34;, os.getenv(&#39;HOME&#39;))
+            configFile = findConfig(&#34;mdCreator.json&#34;, os.getenv(&#39;HOME&#39;))
             config = open(configFile, &#34;r&#34;)
             cfg = json.load(config)
             for lib in cfg:
@@ -608,7 +608,7 @@ class mdCreator:
             secRange = cfg[section][&#34;range&#34;]
         except KeyError:
             secRange = None
-        if self.detect_section(secRange) is False:
+        if self.detectSection(secRange) is False:
             if section == &#34;gifs&#34;:
                 self.apiLoader.setLimit(int(cfg[section][&#34;nbGifs&#34;]))
                 self.apiLoader.buildUrl()
@@ -616,7 +616,7 @@ class mdCreator:
             raise RangeError(&#34;Range is not set for &#34; + str(section) + &#34; section.&#34;)
         return self.redirectSections(secRange, cfg, section)
 
-    def detect_section(self, secRange) -&gt; bool:
+    def detectSection(self, secRange) -&gt; bool:
         &#34;&#34;&#34;
         Detect if the section has a range.
 
@@ -692,7 +692,7 @@ class mdCreator:
 <h3>Methods</h3>
 <dl>
 <dt id="sources.Creator.mdCreator.checkExisting"><code class="name flex">
-<span>def <span class="ident">checkExisting</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">checkExisting</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if a README file already exists into the directory.</p>
@@ -733,8 +733,8 @@ class mdCreator:
     return (0)</code></pre>
 </details>
 </dd>
-<dt id="sources.Creator.mdCreator.detect_section"><code class="name flex">
-<span>def <span class="ident">detect_section</span></span>(<span>self, secRange) ‑> bool</span>
+<dt id="sources.Creator.mdCreator.detectSection"><code class="name flex">
+<span>def <span class="ident">detectSection</span></span>(<span>self, secRange) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Detect if the section has a range.</p>
@@ -752,7 +752,7 @@ class mdCreator:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def detect_section(self, secRange) -&gt; bool:
+<pre><code class="python">def detectSection(self, secRange) -&gt; bool:
     &#34;&#34;&#34;
     Detect if the section has a range.
 
@@ -771,7 +771,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.launchCreator"><code class="name flex">
-<span>def <span class="ident">launchCreator</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">launchCreator</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Main loop function creating the README file.</p>
@@ -813,7 +813,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.loadConfig"><code class="name flex">
-<span>def <span class="ident">loadConfig</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">loadConfig</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Load configuration file.</p>
@@ -837,7 +837,7 @@ class mdCreator:
     configFile = []
 
     try:
-        configFile = find_config(&#34;mdCreator.json&#34;, os.getenv(&#39;HOME&#39;))
+        configFile = findConfig(&#34;mdCreator.json&#34;, os.getenv(&#39;HOME&#39;))
         config = open(configFile, &#34;r&#34;)
         cfg = json.load(config)
         for lib in cfg:
@@ -849,7 +849,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.printArray"><code class="name flex">
-<span>def <span class="ident">printArray</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">printArray</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Writing an array in the user README file.</p>
@@ -883,7 +883,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.printCodingStyle"><code class="name flex">
-<span>def <span class="ident">printCodingStyle</span></span>(<span>self) ‑> int</span>
+<span>def <span class="ident">printCodingStyle</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Write coding style in the created README file.</p></div>
@@ -902,7 +902,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.printPrerequisites"><code class="name flex">
-<span>def <span class="ident">printPrerequisites</span></span>(<span>self) ‑> int</span>
+<span>def <span class="ident">printPrerequisites</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Write prerequisites in the created README file.</p></div>
@@ -923,7 +923,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.redirectSections"><code class="name flex">
-<span>def <span class="ident">redirectSections</span></span>(<span>self, secRange, cfg, section) ‑> None</span>
+<span>def <span class="ident">redirectSections</span></span>(<span>self, secRange, cfg, section) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Write the different README sections.</p>
@@ -983,7 +983,7 @@ class mdCreator:
 </details>
 </dd>
 <dt id="sources.Creator.mdCreator.writeSection"><code class="name flex">
-<span>def <span class="ident">writeSection</span></span>(<span>self, cfg, section) ‑> None</span>
+<span>def <span class="ident">writeSection</span></span>(<span>self, cfg, section) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Write every sections and checks the configuration.</p>
@@ -1024,7 +1024,7 @@ class mdCreator:
         secRange = cfg[section][&#34;range&#34;]
     except KeyError:
         secRange = None
-    if self.detect_section(secRange) is False:
+    if self.detectSection(secRange) is False:
         if section == &#34;gifs&#34;:
             self.apiLoader.setLimit(int(cfg[section][&#34;nbGifs&#34;]))
             self.apiLoader.buildUrl()
@@ -1051,7 +1051,7 @@ class mdCreator:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sources.Creator.find_config" href="#sources.Creator.find_config">find_config</a></code></li>
+<li><code><a title="sources.Creator.findConfig" href="#sources.Creator.findConfig">findConfig</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -1063,7 +1063,7 @@ class mdCreator:
 <h4><code><a title="sources.Creator.mdCreator" href="#sources.Creator.mdCreator">mdCreator</a></code></h4>
 <ul class="two-column">
 <li><code><a title="sources.Creator.mdCreator.checkExisting" href="#sources.Creator.mdCreator.checkExisting">checkExisting</a></code></li>
-<li><code><a title="sources.Creator.mdCreator.detect_section" href="#sources.Creator.mdCreator.detect_section">detect_section</a></code></li>
+<li><code><a title="sources.Creator.mdCreator.detectSection" href="#sources.Creator.mdCreator.detectSection">detectSection</a></code></li>
 <li><code><a title="sources.Creator.mdCreator.launchCreator" href="#sources.Creator.mdCreator.launchCreator">launchCreator</a></code></li>
 <li><code><a title="sources.Creator.mdCreator.loadConfig" href="#sources.Creator.mdCreator.loadConfig">loadConfig</a></code></li>
 <li><code><a title="sources.Creator.mdCreator.printArray" href="#sources.Creator.mdCreator.printArray">printArray</a></code></li>
