@@ -288,4 +288,3 @@ class mdCreator:
             "c": cStyle,
             "haskell": haskellStyle
         }.get(self.language.lower(), noStyle)(self.fileDesc, self.language, self.project))
-
