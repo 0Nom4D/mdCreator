@@ -1,8 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
+from sources.ArgumentHandler import parseArgs
+from sources.Creator import mdCreator
+import sys
 
-./auto_update.sh
-printf "${GREEN}Launching...\n${NC}"
-./src/main.py $@
+def main():
+    args = parseArgs(sys.argv[1:])
+    creator = mdCreator(args.projectName, args.language, args.gifKeywords, args.array)
+    creator.launchCreator()
+    return (0)
+
+if __name__ == "__main__":
+    exit(main())

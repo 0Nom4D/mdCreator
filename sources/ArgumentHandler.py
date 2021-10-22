@@ -3,6 +3,18 @@
 import argparse
 
 def parseArgs(args):
+    """
+    Parses arguments passed to the program.
+
+    Parameters
+    -------
+    args : list
+        List of arguments given as parameters
+
+    Returns
+    -------
+    Class built depending on the arguments.
+    """
     parser = argparse.ArgumentParser(prog="mdCreator", description='Options Parser for mdCreator')
     parser.add_argument('-p', '--pname', required=True, dest='projectName', type=str, help='Project\'s Name')
     parser.add_argument('-l', '--language', required=True, dest='language', type=str, help='Project\'s Main Language')

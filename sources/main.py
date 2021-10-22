@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from ArgumentHandler import parseArgs
-from Creator import mdCreator
+from sources.ArgumentHandler import parseArgs
+from sources.Creator import mdCreator
 import sys
 
 def main():
