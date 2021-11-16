@@ -32,8 +32,8 @@ jobs:
       - name: Update Documentation
         run: |
           rm -rf docs/*
-          pdoc3 sources/
-          cd docs
+          pdoc3 -o docs/ --html sources/
+          cd docs/sources/
           git config --global user.email "${GITHUB_ACTOR}@github.com";
           git config --global user.name "${GITHUB_ACTOR}";
           git init
