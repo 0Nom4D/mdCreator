@@ -1,0 +1,47 @@
+name: Update Documentation
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  Deployment:
+    name: Deploy Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.8.9
+          token: ${{ github.token }}
+
+      - name: Install Python depedencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-pip
+          sudo apt-get install python3-requests
+          python -m pip install requests
+          sudo pip install requests
+          sudo pip3 install requests
+          sudo pip3 install pdoc3
+
+      - uses: actions/checkout@v2.3.4
+      - name: Update Documentation
+        run: |
+          rm -rf docs/*
+          pdoc3 -o docs/ --html sources/
+          cd docs/sources/
+          git config --global user.email "${GITHUB_ACTOR}@github.com";
+          git config --global user.name "${GITHUB_ACTOR}";
+          git init
+          git add -A;
+          git commit -m "mdCreator : documentation - Deploying the docs";
+          git remote add origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@${GITHUB_REPO};
+          git checkout -b documentation
+          git push --force origin documentation;
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: "github.com/0Nom4D/mdCreator"
