@@ -5,6 +5,7 @@ __pycache__
 
 #File Extensions
 *.pyc
+.env
 
 #File
 Makefile
