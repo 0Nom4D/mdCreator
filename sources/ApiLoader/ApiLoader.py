@@ -84,7 +84,7 @@ class ApiLoader:
 
         self.buildUrl()
 
-    #Gifs Tenor API
+    # Gifs Tenor API
     def buildUrl(self) -> None:
         """
         Create the url with baseUrl and encoded parameters.
@@ -144,7 +144,7 @@ class ApiLoader:
                         gifsUrls.append(media["gif"]["url"])
             else:
                 print(ApiError())
-                return (None)
-            return (gifsUrls)
+                return None
+            return gifsUrls
         print(ApiError("ApiLoader Url isn't build!"))
-        return (None)
+        return None

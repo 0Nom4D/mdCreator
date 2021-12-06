@@ -2,6 +2,7 @@
 
 firstStand = " is developed with "
 
+
 def noStyle(fileDesc, language, project):
     """
     Writes the coding style in the README file depending of the project main language.
@@ -15,8 +16,9 @@ def noStyle(fileDesc, language, project):
     project : str
         Project name
     """
-    fileDesc.write(project + firstStand + language + ". EPITECH doesn't impose any Coding Style to this but I tried to be as cleaner as possible.\n\n")
-    return (0)
+    fileDesc.write(f'{project}{firstStand}{language}. EPITECH doesn\'t impose any Coding Style to this but I tried to be as cleaner as possible.\n\n')
+    return 0
+
 
 def cStyle(fileDesc, language, project):
     """
@@ -31,8 +33,9 @@ def cStyle(fileDesc, language, project):
     project : str
         Project name
     """
-    fileDesc.write(project + firstStand + language + ". " + project + " is compliant with **EPITECH C / C++ Coding Style**.\n\n")
-    return (0)
+    fileDesc.write(f'{project}{firstStand}{language}. {project} is compliant with **EPITECH C / C++ Coding Style**.\n\n')
+    return 0
+
 
 def haskellStyle(fileDesc, language, project):
     """
@@ -47,5 +50,5 @@ def haskellStyle(fileDesc, language, project):
     project : str
         Project name
     """
-    fileDesc.write(project + firstStand + language + ". " + project + " is compliant with **EPITECH Haskell Coding Style**.\n\n")
-    return (0)
+    fileDesc.write(f'{project}{firstStand}{language}. {project} is compliant with **EPITECH Haskell Coding Style**.\n\n')
+    return 0
