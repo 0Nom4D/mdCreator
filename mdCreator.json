@@ -1,33 +1,45 @@
 {
-  "header": {
+  "student": {
+    "header": {
       "range": 1,
       "title": null,
       "description": " is a new project."
-  },
-  "disclaimer": {
+    },
+    "disclaimer": {
       "range": 2,
       "title": "Before continuing...",
       "description": "This project is an EPITECH Project. If you are an EPITECH student, move out the way! Nothing to see here... The groups don't want to be involved to your -42.\nIf you're not, no worries! You're welcome here!"
-  },
-  "prerequisites": {
+    },
+    "prerequisites": {
       "range": 3,
       "title": "Prerequisites"
-  },
-  "program": {
+    },
+    "program": {
       "range": 3,
       "title": "Building program",
       "description": "Tell here how to compile / use / test your program."
-  },
-  "style": {
+    },
+    "style": {
       "range": 3,
       "title": "Coding Style"
-  },
-  "authors": {
+    },
+    "authors": {
       "range": 2,
       "title": "Authors",
       "description": "* **Arthur Adam** - [0Nom4D](https://github.com/0Nom4D)"
+    },
+    "gifs": {
+      "nbGifs": 5
+    }
   },
-  "gifs": {
-    "nbGifs": 5
+  "pro": {
+    "header": {
+      "range": 1,
+      "title": null,
+      "description": " is a new project."
+    },
+    "gifs": {
+      "nbGifs": 5
+    }
   }
 }

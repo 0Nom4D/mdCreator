@@ -22,7 +22,7 @@ jobs:
           sudo pip3 install requests
 
       - name: Run mdCreator
-        run: echo -ne "y" | ./mdCreator -p GithubActions -al C++ -g Evil Beware we have waffles
+        run: echo -ne 'y\ny' | ./mdCreator -p GithubActions -al C++ -g Evil Beware we have waffles
 
       - uses: actions/upload-artifact@v2
         with:
