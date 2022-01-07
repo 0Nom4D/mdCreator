@@ -226,7 +226,6 @@ class mdCreator:
                 raise ConfigError('mdCreatorrc file is missing.')
             cfgParser = configparser.ConfigParser()
             cfgParser.read(rcFile)
-            print(cfgParser.sections())
             if cfgParser['CONFIG']['configtype'] == "ToBeAsked":
                 while value is None:
                     try:
