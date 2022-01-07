@@ -154,7 +154,8 @@ class mdCreator:
         if self.array is True:
             self.printArray()
         self.fileDesc.write(
-            "\nThis README file has been created with mdCreator. [Please check the project by clicking this link.](https://github.com/0Nom4D/mdCreator/)")
+            "\nThis README file has been created with mdCreator. [Please check the project by clicking this link.]("
+            "https://github.com/0Nom4D/mdCreator/)")
         self.fileDesc.close()
         print("\nREADME.md created.")
         print("Don't forget to edit your README.md file if something's wrong with the existing file.")
@@ -224,7 +225,8 @@ class mdCreator:
             if rcFile == "":
                 raise ConfigError('mdCreatorrc file is missing.')
             cfgParser = configparser.ConfigParser()
-            cfgParser.read('mdCreatorrc')
+            cfgParser.read(rcFile)
+            print(cfgParser.sections())
             if cfgParser['CONFIG']['configtype'] == "ToBeAsked":
                 while value is None:
                     try:
