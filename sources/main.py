@@ -4,11 +4,13 @@ from sources.ArgumentHandler import parseArgs
 from sources.Creator import mdCreator
 import sys
 
+
 def main():
     args = parseArgs(sys.argv[1:])
     creator = mdCreator(args.projectName, args.language, args.gifKeywords, args.array)
     creator.launchCreator()
-    return (0)
+    return 0
+
 
 if __name__ == "__main__":
     exit(main())

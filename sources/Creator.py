@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
+import configparser
 
-from sources.Prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, noPrerequisites
+from sources.Prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, \
+    noPrerequisites
 from sources.CodingStyle import cStyle, haskellStyle, noStyle
 from sources.ApiLoader.ApiLoader import ApiLoader
+from configparser import *
+from typing import Union
 import json
 import os
 
-def findConfig(name, path) -> str:
+
+def find_config(name, path) -> str:
     """
     Find recursively a file in a directory.
 
@@ -23,8 +28,9 @@ def findConfig(name, path) -> str:
     """
     for root, dirs, files in os.walk(path):
         if name in files:
-            return (os.path.join(root, name))
-    return ("")
+            return os.path.join(root, name)
+    return ""
+
 
 class RangeError(Exception):
     """
@@ -57,6 +63,39 @@ class RangeError(Exception):
         """
         return f'RangeError: {self.message}'
 
+
+class ConfigError(Exception):
+    """
+    Exception raised when error occurs when configuration files are mission.
+
+    Attributes
+    ----------
+    message : str
+        Exception explanation
+    """
+
+    def __init__(self, message):
+        """
+        Constructs an actual ConfigError Exception class.
+
+        Parameters
+        ----------
+        message : str
+            Message explaning the ConfigError
+        """
+        self.message = message
+
+    def __str__(self):
+        """
+        Returns the actual error message.
+
+        Returns
+        -------
+        Actual ConfigError message.
+        """
+        return f'ConfigError: {self.message}'
+
+
 class mdCreator:
     """
     Main project class having the main computing loop.
@@ -78,6 +117,7 @@ class mdCreator:
     apiLoader : ApiLoader
         Class making every Tenor's Api calls
     """
+
     def __init__(self, projName, usedLang, gifAttr, arrOpt):
         self.project = projName
         if gifAttr is None:
@@ -91,7 +131,7 @@ class mdCreator:
         self.student = False
         self.apiLoader = ApiLoader(url="https://g.tenor.com/v1/search?", search=gifAttr, limit=2)
 
-    #Main Loop
+    # Main Loop
     def launchCreator(self) -> None:
         """
         Main loop function creating the README file.
@@ -108,12 +148,14 @@ class mdCreator:
             self.fileDesc.write("## Asked GIFS\n\n")
             gifList = self.apiLoader.searchGifs()
             while index < len(gifList):
-                self.fileDesc.write("![Alt Text](" + gifList[index] + ")\n")
+                self.fileDesc.write(f'![Alt Text]({gifList[index]})\n')
                 index += 1
             self.fileDesc.write("\n")
         if self.array is True:
             self.printArray()
-        self.fileDesc.write("\nThis README file has been created with mdCreator. [Please check the project by clicking this link](https://github.com/0Nom4D/mdCreator/)")
+        self.fileDesc.write(
+            "\nThis README file has been created with mdCreator. [Please check the project by clicking this link.]("
+            "https://github.com/0Nom4D/mdCreator/)")
         self.fileDesc.close()
         print("\nREADME.md created.")
         print("Don't forget to edit your README.md file if something's wrong with the existing file.")
@@ -159,13 +201,13 @@ class mdCreator:
                     else:
                         continue
                 except EOFError:
-                    print("mdCreator Stopped - creator.py: l.75")
+                    print("mdCreator Stopped - creator.py: l.203")
                     exit(1)
         else:
             self.fileDesc = open("README.md", "w")
-        return (0)
+        return 0
 
-    #README.md Sections
+    # README.md Sections
     def loadConfig(self) -> None:
         """
         Load configuration file.
@@ -174,20 +216,50 @@ class mdCreator:
         -------
         None
         """
-        configFile = []
+        configMode = None
+        value = None
 
         try:
-            configFile = findConfig("mdCreator.json", os.getenv('HOME'))
+            # Loading mdCreatorrc config file
+            rcFile = find_config("mdCreatorrc", os.getenv('HOME'))
+            if rcFile == "":
+                raise ConfigError('mdCreatorrc file is missing.')
+            cfgParser = configparser.ConfigParser()
+            cfgParser.read(rcFile)
+            print(cfgParser.sections())
+            if cfgParser['CONFIG']['configtype'] == "ToBeAsked":
+                while value is None:
+                    try:
+                        value = input("For your next use, would you like to use the Student Configuration? [y/n] ")
+                        if value == 'y':
+                            cfgParser.set('CONFIG', 'configType', 'student')
+                        elif value == 'n':
+                            cfgParser.set('CONFIG', 'configType', 'pro')
+                        else:
+                            continue
+                        with open('mdCreatorrc', 'w') as rcFileFD:
+                            cfgParser.write(rcFileFD)
+                        rcFileFD.close()
+                    except EOFError:
+                        print("mdCreator Stopped - creator.py: l.241")
+                        exit(1)
+            configMode = cfgParser['CONFIG']['configtype']
+
+            # Loading mdCreator.json config file
+            configFile = find_config("mdCreator.json", os.getenv('HOME'))
             config = open(configFile, "r")
             cfg = json.load(config)
-            for lib in cfg:
-                self.writeSection(cfg, lib)
+            for lib in cfg[configMode]:
+                self.writeSection(cfg[configMode], lib)
         except KeyError as err:
             (x,) = err.args
-            print("KeyError: " + x)
+            print(f'KeyError: {x}')
+            exit(1)
+        except ConfigError as err:
+            print(err)
             exit(1)
 
-    def writeSection(self, cfg, section) -> None:
+    def writeSection(self, cfg, section) -> Union[int, None]:
         """
         Write every sections and checks the configuration.
 
@@ -208,32 +280,15 @@ class mdCreator:
             secRange = cfg[section]["range"]
         except KeyError:
             secRange = None
-        if self.detectSection(secRange) is False:
+        if secRange is None:
             if section == "gifs":
                 self.apiLoader.setLimit(int(cfg[section]["nbGifs"]))
                 self.apiLoader.buildUrl()
-                return (0)
-            raise RangeError("Range is not set for " + str(section) + " section.")
+                return 0
+            raise RangeError(f'Range is not set for {str(section)} section.')
         return self.redirectSections(secRange, cfg, section)
 
-    def detectSection(self, secRange) -> bool:
-        """
-        Detect if the section has a range.
-
-        Parameters
-        -------
-        secRange : int
-            Section range
-
-        Returns
-        -------
-        Boolean telling if the section has a range
-        """
-        if secRange is None:
-            return False
-        return True
-
-    def redirectSections(self, secRange, cfg, section) -> None:
+    def redirectSections(self, secRange, cfg, section) -> Union[int, None]:
         """
         Write the different README sections.
 
@@ -251,40 +306,40 @@ class mdCreator:
         None
         """
         if secRange < 1:
-            raise RangeError("Range must be higher than 0 for " + str(section) + " section.")
+            raise RangeError(f'Range must be higher than 0 for {str(section)} section.')
         while secRange != 0:
             self.fileDesc.write("#")
             secRange -= 1
         if section == "header":
-            self.fileDesc.write(" " + self.project + "\n\n")
+            self.fileDesc.write(f' {self.project}\n\n')
         elif cfg[section]["title"] is not None:
-            self.fileDesc.write(" " + cfg[section]["title"] + "\n\n")
+            self.fileDesc.write(f'{cfg[section]["title"]}\n\n')
         if section == "style":
             self.printCodingStyle()
         elif section == "prerequisites":
             self.printPrerequisites()
         elif cfg[section]["description"][0] == ' ':
-            self.fileDesc.write(self.project + cfg[section]["description"] + "\n\n")
+            self.fileDesc.write(f'{self.project}{cfg[section]["description"]}\n\n')
         else:
-            self.fileDesc.write(cfg[section]["description"] + "\n\n")
-        return (0)
+            self.fileDesc.write(f'{cfg[section]["description"]}\n\n')
+        return 0
 
     def printPrerequisites(self) -> int:
         """
         Write prerequisites in the created README file.
         """
-        return({
-            "c++": cPlusPlusPrerequisites,
-            "c": cPrerequisites,
-            "python": pythonPrerequisites,
-            "haskell": haskellPrerequisites
-        }.get(self.language.lower(), noPrerequisites)(self.fileDesc))
+        return ({
+                    "c++": cPlusPlusPrerequisites,
+                    "c": cPrerequisites,
+                    "python": pythonPrerequisites,
+                    "haskell": haskellPrerequisites
+                }.get(self.language.lower(), noPrerequisites)(self.fileDesc))
 
     def printCodingStyle(self) -> int:
         """
         Write coding style in the created README file.
         """
         return ({
-            "c": cStyle,
-            "haskell": haskellStyle
-        }.get(self.language.lower(), noStyle)(self.fileDesc, self.language, self.project))
+                    "c": cStyle,
+                    "haskell": haskellStyle
+                }.get(self.language.lower(), noStyle)(self.fileDesc, self.language, self.project))

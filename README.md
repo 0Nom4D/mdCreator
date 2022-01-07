@@ -32,7 +32,7 @@ mdCreator works as it follows:
 $> mdCreator --pname <Project Name> -l <Project's Main Language>
 ```
 
-You can have access to every options, you can use ```-h / --help``` option or read the table below.
+You can have access to every option, you can use ```-h / --help``` option or read the table below.
 
 | Options                   | Action                                            |  Mandatory         |
 | ------------------------- |:-------------------------------------------------:|:------------------:|
@@ -44,24 +44,28 @@ You can have access to every options, you can use ```-h / --help``` option or re
 You can also change the written categories by changing the mdCreator.json configuration file by adding / removing the categories.
 Please use the following syntax while adding categories:
 
-```json
+```json lines
 {
-  "authors": {
+  "student": {
+    "authors": {
       "range": 2,
       "title": "My new title",
       "description": "My new description"
+    },
   }
 }
 
 where
-    range is the size of the title to add to the README: 1 is the biggest, 3 is the smallest
+    range is the size of the title to add to the README (1 is the biggest and 3 is the smallest)
 ```
 
-**For more informations about configuration file, please check the [mdCreator wiki](https://github.com/0Nom4D/mdCreator/wiki/Configuration-File)!**
+**For more information about configuration file, please check the [mdCreator wiki](https://github.com/0Nom4D/mdCreator/wiki/Configuration-File)!**
+
+You now have the choice between a student configuration and a new professional configuration. Feel free to edit the 'pro' section inside the mdCreator.json configuration file.
 
 ### Coding Style
 
-mdCreator is developed with Python. There's not a real coding style but I tried being the cleaner possible.
+mdCreator is developed with Python. There's not a real coding style, but I tried being the cleaner possible.
 
 ## Authors
 
@@ -70,3 +74,4 @@ mdCreator is developed with Python. There's not a real coding style but I tried 
 ## Contributors
 
 [![Alt Text](https://contrib.rocks/image?repo=0Nom4D/mdCreator)](https://github.com/0Nom4D/mdCreator/graphs/contributors)
+

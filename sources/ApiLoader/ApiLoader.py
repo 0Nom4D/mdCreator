@@ -5,6 +5,7 @@ from typing import Union
 import requests
 import json
 
+
 class ApiError(Exception):
     """
     Exception raised when error occurs in ApiLoader.
@@ -35,6 +36,7 @@ class ApiError(Exception):
         Actual Api Error message.
         """
         return f'ApiError: {self.message}'
+
 
 class ApiLoader:
     """
@@ -84,7 +86,7 @@ class ApiLoader:
 
         self.buildUrl()
 
-    #Gifs Tenor API
+    # Gifs Tenor API
     def buildUrl(self) -> None:
         """
         Create the url with baseUrl and encoded parameters.
@@ -137,14 +139,14 @@ class ApiLoader:
 
         if self._build:
             r = requests.get(self._tranUrl)
-            if r.status_code == 200 or r.status_code == 202:
+            if r.status_code == 200:
                 values = json.loads(r.content)
                 for gif in values["results"]:
                     for media in gif["media"]:
                         gifsUrls.append(media["gif"]["url"])
             else:
                 print(ApiError())
-                return (None)
-            return (gifsUrls)
+                return None
+            return gifsUrls
         print(ApiError("ApiLoader Url isn't build!"))
-        return (None)
+        return None
