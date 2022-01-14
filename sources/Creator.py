@@ -221,7 +221,6 @@ class mdCreator:
         -------
         None
         """
-
         def checkConfigMode() -> None:
             inputValue = None
 
