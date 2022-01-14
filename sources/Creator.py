@@ -29,7 +29,8 @@ def find_config(name, path) -> str:
     """
     for root, dirs, files in os.walk(path):
         if name in files:
-            return os.path.join(root, name)
+            if "mdCreator" in os.path.join(root, name):
+                return os.path.join(root, name)
     return ""
 
 
@@ -88,7 +89,10 @@ class mdCreator:
     """
 
     def __init__(self, projName, usedLang, gifAttr, arrOpt):
-        self._envPath = find_config("mdCrator/.env", os.getenv("HOME"))
+        self._envPath = find_config(".env", os.getenv("HOME"))
+        if self._envPath == "":
+            print("mdCreator .env file must be located in the mdCreator directory.")
+            exit(1)
         self._envDict = dotenv_values(self._envPath)
         self._envFile = find_dotenv()
         load_dotenv(self._envFile)
