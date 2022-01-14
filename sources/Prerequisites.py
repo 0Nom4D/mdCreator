@@ -22,7 +22,8 @@ def pythonPrerequisites(fileDesc):
     fileDesc : TextIOWrapper | None
         Filedescriptor describing the README.md file
     """
-    fileDesc.write("To use this project, you'll need Python (Version 3.8):\n\n* [Python Installation](https://www.python.org/downloads/)\n\n")
+    fileDesc.write("To use this project, you'll need Python (Version 3.8):\n\n* [Python Installation]("
+                   "https://www.python.org/downloads/)\n\n")
     return 0
 
 
@@ -48,7 +49,8 @@ def haskellPrerequisites(fileDesc):
     fileDesc : TextIOWrapper | None
         Filedescriptor describing the README.md file
     """
-    fileDesc.write("To use this project, you'll need Stack:\n\n* [Stack Installation Guide](https://docs.haskellstack.org/en/stable/install_and_upgrade/)\n\n")
+    fileDesc.write("To use this project, you'll need Stack:\n\n* [Stack Installation Guide]("
+                   "https://docs.haskellstack.org/en/stable/install_and_upgrade/)\n\n")
     return 0
 
 

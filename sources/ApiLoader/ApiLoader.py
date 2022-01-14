@@ -74,9 +74,7 @@ class ApiLoader:
             Number of gif mdCreator is going to get from Tenor's Api
         """
 
-        # Tenor API Key isn't protected or hidden because
-        # I didn't find the best way to camouflage it
-        self._apikey = "CSGXSUKBREYZ"
+        self._apikey = None
         self._baseUrl = url
         self._tranUrl = ""
         self._limit = limit
@@ -84,10 +82,8 @@ class ApiLoader:
         self._params = dict()
         self._build = False
 
-        self.buildUrl()
-
     # Gifs Tenor API
-    def buildUrl(self) -> None:
+    def buildUrl(self, apiKey: str) -> None:
         """
         Create the url with baseUrl and encoded parameters.
 
@@ -95,10 +91,13 @@ class ApiLoader:
         -------
         None
         """
+        if self._search in [None, '']:
+            return
+
         urlLink = self._baseUrl
         self._params = {
             "q": str(self._search),
-            "key": self._apikey,
+            "key": apiKey,
             "limit": str(self._limit),
             "media_filter": "minimal"
         }
