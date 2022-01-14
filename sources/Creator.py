@@ -126,9 +126,10 @@ class mdCreator:
 
         self.project = projName
         if gifAttr is None:
-            self.gifAttr = ""
+            self.gifAttr = ''
         else:
             self.gifAttr = gifAttr
+        print(self.gifAttr)
         self.language = usedLang
         self.fileDesc = None
         self.array = arrOpt
@@ -224,7 +225,7 @@ class mdCreator:
         def checkConfigMode() -> None:
             inputValue = None
 
-            if self._envDict["CONFIGTYPE"] == "ToBeAsked":
+            if "CONFIGTYPE" not in self._envDict or self._envDict["CONFIGTYPE"] not in ['student', 'pro']:
                 while inputValue is None:
                     try:
                         inputValue = input("For your next use, would you like to use the Student Configuration? [y/n] ")
@@ -241,7 +242,7 @@ class mdCreator:
         def getAPIKey() -> None:
             inputValue = None
 
-            if self._envDict["APIKEY"] == '':
+            if "APIKEY" not in self._envDict or self._envDict["APIKEY"] == '':
                 while inputValue is None:
                     try:
                         inputValue = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
@@ -253,7 +254,8 @@ class mdCreator:
 
         try:
             checkConfigMode()
-            getAPIKey()
+            if self.gifAttr != '':
+                getAPIKey()
 
             # Refreshes Environment Values
             self._envDict = dotenv_values(".env")

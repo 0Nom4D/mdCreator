@@ -17,14 +17,18 @@ To use this project, you'll need Python (Version 3.8):
 
 * [Python Installation](https://www.python.org/downloads/)
 
-Please refer to this link in order to install ```requests python 3 module```:
+Please refer to this link in order to install `requests python 3 module` and `python-dotenv python 3 module`:
 
-* [Python Requests Module Installation](https://stackoverflow.com/questions/17309288/importerror-no-module-named-requests)
+* [Python Requests Module Installation](https://pypi.org/project/requests/)
+* [Python Python-Dotenv Module Installation](https://pypi.org/project/python-dotenv/)
 
 ### Building program
 
 mdCreator is a little Python Script dedicated to help programmers to not spend 4 hours creating a README.md.
 Created README.md is perfectly customisable using a .json configuration file.
+
+mdCreator use Tenor GIF Api. To use mdCreator, you will need a Tenor API Key. To get one, you can check
+[this](https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration).
 
 mdCreator works as it follows:
 

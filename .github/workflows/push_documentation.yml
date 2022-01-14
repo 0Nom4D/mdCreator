@@ -24,9 +24,10 @@ jobs:
           sudo apt-get install python3-pip
           sudo apt-get install python3-requests
           python -m pip install requests
-          sudo pip install requests
-          sudo pip3 install requests
-          sudo pip3 install pdoc3
+          pip install requests
+          pip3 install requests
+          pip3 install pdoc3
+          pip3 install python-dotenv
 
       - uses: actions/checkout@v2.3.4
       - name: Update Documentation

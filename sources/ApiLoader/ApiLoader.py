@@ -91,7 +91,7 @@ class ApiLoader:
         -------
         None
         """
-        if not self._build:
+        if self._search in [None, '']:
             return
 
         urlLink = self._baseUrl

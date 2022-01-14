@@ -18,11 +18,12 @@ jobs:
           sudo apt-get install python3-pip
           sudo apt-get install python3-requests
           python -m pip install requests
-          sudo pip install requests
-          sudo pip3 install requests
+          pip install requests
+          pip3 install requests
+          pip3 install python-dotenv
 
       - name: Run mdCreator
-        run: echo -ne 'y\ny' | ./mdCreator -p GithubActions -al C++ -g Evil Beware we have waffles
+        run: echo -ne 'y\ny' | ./mdCreator -p GithubActions -al C++
 
       - uses: actions/upload-artifact@v2
         with:
