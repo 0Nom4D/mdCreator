@@ -65,38 +65,6 @@ class RangeError(Exception):
         return f'RangeError: {self.message}'
 
 
-class ConfigError(Exception):
-    """
-    Exception raised when error occurs when configuration files are mission.
-
-    Attributes
-    ----------
-    message : str
-        Exception explanation
-    """
-
-    def __init__(self, message):
-        """
-        Constructs an actual ConfigError Exception class.
-
-        Parameters
-        ----------
-        message : str
-            Message explaning the ConfigError
-        """
-        self.message = message
-
-    def __str__(self):
-        """
-        Returns the actual error message.
-
-        Returns
-        -------
-        Actual ConfigError message.
-        """
-        return f'ConfigError: {self.message}'
-
-
 class mdCreator:
     """
     Main project class having the main computing loop.
@@ -120,7 +88,8 @@ class mdCreator:
     """
 
     def __init__(self, projName, usedLang, gifAttr, arrOpt):
-        self._envDict = dotenv_values(".env")
+        self._envPath = find_config("mdCrator/.env", os.getenv("HOME"))
+        self._envDict = dotenv_values(self._envPath)
         self._envFile = find_dotenv()
         load_dotenv(self._envFile)
 
@@ -224,54 +193,47 @@ class mdCreator:
         def checkConfigMode() -> None:
             inputValue = None
 
-            if "CONFIGTYPE" not in self._envDict or self._envDict["CONFIGTYPE"] not in ['student', 'pro']:
-                while inputValue is None:
-                    try:
-                        inputValue = input("For your next use, would you like to use the Student Configuration? [y/n] ")
-                        if inputValue == 'y':
-                            set_key(self._envFile, "CONFIGTYPE", 'student')
-                        elif inputValue == 'n':
-                            set_key(self._envFile, "CONFIGTYPE", 'pro')
-                        else:
-                            continue
-                    except EOFError:
-                        print("mdCreator Stopped - creator.py: l.235")
-                        exit(1)
+            if "CONFIGTYPE" in self._envDict and self._envDict["CONFIGTYPE"] in ['student', 'pro']:
+                return
+            while inputValue is None:
+                try:
+                    inputValue = input("For your next use, would you like to use the Student Configuration? [y/n] ")
+                    if inputValue == 'y':
+                        set_key(self._envFile, "CONFIGTYPE", 'student')
+                    elif inputValue == 'n':
+                        set_key(self._envFile, "CONFIGTYPE", 'pro')
+                    else:
+                        continue
+                except KeyError:
+                    print("mdCreator Stopped - creator.py: l.235")
+                    exit(1)
 
         def getAPIKey() -> None:
             inputValue = None
 
-            if "APIKEY" not in self._envDict or self._envDict["APIKEY"] == '':
-                while inputValue is None:
-                    try:
-                        inputValue = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
-                        if inputValue != "":
-                            set_key(self._envFile, 'APIKEY', inputValue)
-                    except EOFError:
-                        print("mdCreator Stopped - creator.py: l.249")
-                        exit(1)
+            if "APIKEY" in self._envDict and self._envDict["APIKEY"] != '':
+                return
+            while inputValue is None:
+                try:
+                    inputValue = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
+                    set_key(self._envFile, 'APIKEY', inputValue)
+                except KeyError:
+                    print("mdCreator Stopped - creator.py: l.249")
+                    exit(1)
 
-        try:
-            checkConfigMode()
-            if self.gifAttr != '':
-                getAPIKey()
+        checkConfigMode()
+        if self.gifAttr != '':
+            getAPIKey()
 
-            # Refreshes Environment Values
-            self._envDict = dotenv_values(".env")
+        # Refreshes Environment Values
+        self._envDict = dotenv_values(self._envPath)
 
-            # Loading mdCreator.json config file
-            configFile = find_config("mdCreator.json", os.environ['HOME'])
-            config = open(configFile, "r")
-            cfg = json.load(config)
-            for section in cfg[self._envDict["CONFIGTYPE"]]:
-                self.writeSection(cfg[self._envDict["CONFIGTYPE"]], section)
-        except KeyError as err:
-            (x,) = err.args
-            print(f'KeyError: {x}')
-            exit(1)
-        except ConfigError as err:
-            print(err)
-            exit(1)
+        # Loading mdCreator.json config file
+        configFile = find_config("mdCreator.json", os.environ['HOME'])
+        config = open(configFile, "r")
+        cfg = json.load(config)
+        for section in cfg[self._envDict["CONFIGTYPE"]]:
+            self.writeSection(cfg[self._envDict["CONFIGTYPE"]], section)
 
     def writeSection(self, cfg, section: Union[str, Optional[str]]) -> Union[int, None]:
         """
