@@ -6,8 +6,8 @@ from sources.Prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, c
 from dotenv import dotenv_values, load_dotenv, set_key, find_dotenv
 from sources.CodingStyle import cStyle, haskellStyle, noStyle
 from sources.ApiLoader.ApiLoader import ApiLoader
-from typing import Union, TextIO, Optional
-from configparser import *
+from typing import Union, Optional
+from inspect import currentframe
 import json
 import os
 
@@ -176,7 +176,7 @@ class mdCreator:
                     else:
                         continue
                 except EOFError:
-                    print("mdCreator Stopped - creator.py: l.203")
+                    print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
                     exit(1)
         else:
             self.fileDesc = open("README.md", "w")
@@ -205,7 +205,7 @@ class mdCreator:
                     else:
                         continue
                 except KeyError:
-                    print("mdCreator Stopped - creator.py: l.235")
+                    print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
                     exit(1)
 
         def getAPIKey() -> None:
@@ -218,7 +218,7 @@ class mdCreator:
                     inputValue = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
                     set_key(self._envFile, 'APIKEY', inputValue)
                 except KeyError:
-                    print("mdCreator Stopped - creator.py: l.249")
+                    print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
                     exit(1)
 
         checkConfigMode()

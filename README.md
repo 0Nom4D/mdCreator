@@ -11,6 +11,12 @@ This project is under the jurisdiction of the MIT License. Don't do dumb things.
 
 ![Alt Text](https://media.tenor.com/images/4dc761d53f5bad9863d64de1e6cd8db4/tenor.gif)
 
+In order to make mdCreator work from anywhere you can add it inside your $PATH environment variable:
+
+```text
+$> export PATH=$PATH:path_to_mdCreator
+```
+
 ### Prerequisites
 
 To use this project, you'll need Python (Version 3.8):
