@@ -1,7 +1,9 @@
 #Folders
-.pytest_cache
-__pycache__
-.cache
+.pytest_cache/
+__pycache__/
+reports/
+.cache/
+.idea/
 
 #File Extensions
 *.pyc

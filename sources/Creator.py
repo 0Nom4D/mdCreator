@@ -3,10 +3,11 @@ import configparser
 
 from sources.Prerequisites import cPlusPlusPrerequisites, pythonPrerequisites, cPrerequisites, haskellPrerequisites, \
     noPrerequisites
+from dotenv import dotenv_values, load_dotenv, set_key, find_dotenv
 from sources.CodingStyle import cStyle, haskellStyle, noStyle
 from sources.ApiLoader.ApiLoader import ApiLoader
+from typing import Union, TextIO, Optional
 from configparser import *
-from typing import Union
 import json
 import os
 
@@ -119,6 +120,10 @@ class mdCreator:
     """
 
     def __init__(self, projName, usedLang, gifAttr, arrOpt):
+        self._envDict = dotenv_values(".env")
+        self._envFile = find_dotenv()
+        load_dotenv(self._envFile)
+
         self.project = projName
         if gifAttr is None:
             self.gifAttr = ""
@@ -155,7 +160,7 @@ class mdCreator:
             self.printArray()
         self.fileDesc.write(
             "\nThis README file has been created with mdCreator. [Please check the project by clicking this link.]("
-            "https://github.com/0Nom4D/mdCreator/)")
+            "https://github.com/0Nom4D/mdCreator/)\n")
         self.fileDesc.close()
         print("\nREADME.md created.")
         print("Don't forget to edit your README.md file if something's wrong with the existing file.")
@@ -205,7 +210,6 @@ class mdCreator:
                     exit(1)
         else:
             self.fileDesc = open("README.md", "w")
-        return 0
 
     # README.md Sections
     def loadConfig(self) -> None:
@@ -216,41 +220,50 @@ class mdCreator:
         -------
         None
         """
-        configMode = None
-        value = None
 
-        try:
-            # Loading mdCreatorrc config file
-            rcFile = find_config("mdCreatorrc", os.getenv('HOME'))
-            if rcFile == "":
-                raise ConfigError('mdCreatorrc file is missing.')
-            cfgParser = configparser.ConfigParser()
-            cfgParser.read(rcFile)
-            print(cfgParser.sections())
-            if cfgParser['CONFIG']['configtype'] == "ToBeAsked":
-                while value is None:
+        def checkConfigMode() -> None:
+            inputValue = None
+
+            if self._envDict["CONFIGTYPE"] == "ToBeAsked":
+                while inputValue is None:
                     try:
-                        value = input("For your next use, would you like to use the Student Configuration? [y/n] ")
-                        if value == 'y':
-                            cfgParser.set('CONFIG', 'configType', 'student')
-                        elif value == 'n':
-                            cfgParser.set('CONFIG', 'configType', 'pro')
+                        inputValue = input("For your next use, would you like to use the Student Configuration? [y/n] ")
+                        if inputValue == 'y':
+                            set_key(self._envFile, "CONFIGTYPE", 'student')
+                        elif inputValue == 'n':
+                            set_key(self._envFile, "CONFIGTYPE", 'pro')
                         else:
                             continue
-                        with open('mdCreatorrc', 'w') as rcFileFD:
-                            cfgParser.write(rcFileFD)
-                        rcFileFD.close()
                     except EOFError:
-                        print("mdCreator Stopped - creator.py: l.241")
+                        print("mdCreator Stopped - creator.py: l.235")
                         exit(1)
-            configMode = cfgParser['CONFIG']['configtype']
+
+        def getAPIKey() -> None:
+            inputValue = None
+
+            if self._envDict["APIKEY"] == '':
+                while inputValue is None:
+                    try:
+                        inputValue = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
+                        if inputValue != "":
+                            set_key(self._envFile, 'APIKEY', inputValue)
+                    except EOFError:
+                        print("mdCreator Stopped - creator.py: l.249")
+                        exit(1)
+
+        try:
+            checkConfigMode()
+            getAPIKey()
+
+            # Refreshes Environment Values
+            self._envDict = dotenv_values(".env")
 
             # Loading mdCreator.json config file
-            configFile = find_config("mdCreator.json", os.getenv('HOME'))
+            configFile = find_config("mdCreator.json", os.environ['HOME'])
             config = open(configFile, "r")
             cfg = json.load(config)
-            for lib in cfg[configMode]:
-                self.writeSection(cfg[configMode], lib)
+            for section in cfg[self._envDict["CONFIGTYPE"]]:
+                self.writeSection(cfg[self._envDict["CONFIGTYPE"]], section)
         except KeyError as err:
             (x,) = err.args
             print(f'KeyError: {x}')
@@ -259,7 +272,7 @@ class mdCreator:
             print(err)
             exit(1)
 
-    def writeSection(self, cfg, section) -> Union[int, None]:
+    def writeSection(self, cfg, section: Union[str, Optional[str]]) -> Union[int, None]:
         """
         Write every sections and checks the configuration.
 
@@ -283,7 +296,7 @@ class mdCreator:
         if secRange is None:
             if section == "gifs":
                 self.apiLoader.setLimit(int(cfg[section]["nbGifs"]))
-                self.apiLoader.buildUrl()
+                self.apiLoader.buildUrl(self._envDict["APIKEY"])
                 return 0
             raise RangeError(f'Range is not set for {str(section)} section.')
         return self.redirectSections(secRange, cfg, section)
