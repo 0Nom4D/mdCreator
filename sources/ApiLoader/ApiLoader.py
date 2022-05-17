@@ -23,7 +23,7 @@ class ApiError(Exception):
         Parameters
         ----------
         message : str
-            Message explaning the ApiError
+            Message explaining the ApiError
         """
         self.message = message
 
@@ -48,7 +48,7 @@ class ApiLoader:
     -------
     _url : str
         Api base endpoint url
-    _tranUrl : str
+    _transformed_url : str
         Transformed url with parameters
     _limit : int
         Number of gif mdCreator is going to get from Tenor's Api
@@ -75,15 +75,15 @@ class ApiLoader:
         """
 
         self._apikey = None
-        self._baseUrl = url
-        self._tranUrl = ""
+        self._base_url = url
+        self._transformed_url = ""
         self._limit = limit
         self._search = search
         self._params = dict()
         self._build = False
 
     # Gifs Tenor API
-    def buildUrl(self, apiKey: str) -> None:
+    def build_url(self, api_key: str) -> None:
         """
         Create the url with baseUrl and encoded parameters.
 
@@ -94,22 +94,22 @@ class ApiLoader:
         if self._search in [None, '']:
             return
 
-        urlLink = self._baseUrl
+        url_link = self._base_url
         self._params = {
             "q": str(self._search),
-            "key": apiKey,
+            "key": api_key,
             "limit": str(self._limit),
             "media_filter": "minimal"
         }
 
-        urlLink += urlencode(self._params, quote_via=quote_plus)
-        self._tranUrl = urlLink
+        url_link += urlencode(self._params, quote_via=quote_plus)
+        self._transformed_url = url_link
         self._build = True
 
-    def setLimit(self, limit: int) -> None:
+    def set_limit(self, limit: int) -> None:
         self._limit = limit
 
-    def isUrlBuild(self) -> bool:
+    def is_url_build(self) -> bool:
         """
         Checks if Api Search Url is built.
 
@@ -123,7 +123,7 @@ class ApiLoader:
         """
         return self._build
 
-    def searchGifs(self) -> Union[None, list]:
+    def search_gifs(self) -> Union[None, list]:
         """
         Search for gifs depending on the actual searching arguments.
 
@@ -134,18 +134,18 @@ class ApiLoader:
         Either None or a list of gifs urls
         """
 
-        gifsUrls = []
+        gifs_urls = []
 
         if self._build:
-            r = requests.get(self._tranUrl)
+            r = requests.get(self._transformed_url)
             if r.status_code == 200:
                 values = json.loads(r.content)
                 for gif in values["results"]:
                     for media in gif["media"]:
-                        gifsUrls.append(media["gif"]["url"])
+                        gifs_urls.append(media["gif"]["url"])
             else:
                 print(ApiError())
                 return None
-            return gifsUrls
+            return gifs_urls
         print(ApiError("ApiLoader Url isn't build!"))
         return None

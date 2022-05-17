@@ -44,12 +44,13 @@ $> mdCreator --pname <Project Name> -l <Project's Main Language>
 
 You can have access to every option, you can use ```-h / --help``` option or read the table below.
 
-| Options                   | Action                                            |  Mandatory         |
-| ------------------------- |:-------------------------------------------------:|:------------------:|
-| -p / --pname Name         | Project Name                                      | &#9745;            |
-| -l / --language Language  | Project's Main Language                           | &#9745;            |
-| -a / --array              | Create a table in your README.md                  | &#9744;            |
-| -g / --gif [Keywords ...] | Add Gifs corresponding to the keywords you give   | &#9744;            |
+| Options                   | Action                                          |
+|---------------------------|-------------------------------------------------|
+| --template                | README template name                            |
+| -p / --pname Name         | Project Name                                    |
+| -l / --language Language  | Project's Main Language                         |
+| -a / --array              | Create a table in your README.md                |
+| -g / --gif [Keywords ...] | Add Gifs corresponding to the keywords you give |
 
 You can also change the written categories by changing the mdCreator.json configuration file by adding / removing the categories.
 Please use the following syntax while adding categories:
