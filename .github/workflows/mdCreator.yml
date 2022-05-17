@@ -23,7 +23,9 @@ jobs:
           pip3 install python-dotenv
 
       - name: Run mdCreator
-        run: echo -ne 'y\ny' | ./mdCreator -p GithubActions -al C++
+        run: |
+          make re
+          echo -ne 'y\ny' | ./mdCreator -p GithubActions -al C++
 
       - uses: actions/upload-artifact@v2
         with:

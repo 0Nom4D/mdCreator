@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 from sources.ArgumentHandler import parse_args
-from sources.Creator import mdCreator
+from sources.Creator import MdCreator
 import sys
 
 
 def main():
-    args = parse_args(sys.argv[1:])
-    creator = mdCreator(args.projectName, args.language, args.gifKeywords, args.array)
+    options = parse_args(sys.argv[1:])
+    creator = MdCreator(options)
     creator.launch_creator()
     return 0
 

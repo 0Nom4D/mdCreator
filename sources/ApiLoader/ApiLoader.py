@@ -46,44 +46,38 @@ class ApiLoader:
 
     Attributes
     -------
-    _url : str
+    _base_url : str
         Api base endpoint url
     _transformed_url : str
         Transformed url with parameters
     _limit : int
         Number of gif mdCreator is going to get from Tenor's Api
-    _search : str
-        Actual string build by every gif search keywords
     _params : int
         Parameters to encode for the Api Request
     _build : int
         Boolean verifying if searching url is built
     """
 
-    def __init__(self, url: str, search: str, limit: int = 5) -> None:
+    def __init__(self, url: str, limit: int = 5) -> None:
         """
         Constructs a new ApiLoader object.
 
         Parameters
         -------
-        _url : str
+        url : str
             Api base endpoint url
-        _search : str
-            Actual string build by every gif search keywords
-        _limit : int
+        limit : int
             Number of gif mdCreator is going to get from Tenor's Api
         """
 
-        self._apikey = None
         self._base_url = url
         self._transformed_url = ""
         self._limit = limit
-        self._search = search
         self._params = dict()
         self._build = False
 
     # Gifs Tenor API
-    def build_url(self, api_key: str) -> None:
+    def build_url(self, search: str, api_key: str) -> None:
         """
         Create the url with baseUrl and encoded parameters.
 
@@ -91,12 +85,12 @@ class ApiLoader:
         -------
         None
         """
-        if self._search in [None, '']:
+        if search in [None, '']:
             return
 
         url_link = self._base_url
         self._params = {
-            "q": str(self._search),
+            "q": str(search),
             "key": api_key,
             "limit": str(self._limit),
             "media_filter": "minimal"
@@ -123,7 +117,7 @@ class ApiLoader:
         """
         return self._build
 
-    def search_gifs(self) -> Union[None, list]:
+    def get_gifs(self) -> Union[None, list]:
         """
         Search for gifs depending on the actual searching arguments.
 

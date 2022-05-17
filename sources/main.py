@@ -6,8 +6,8 @@ import sys
 
 
 def main():
-    args = parse_args(sys.argv[1:])
-    creator = MdCreator(args.project_name, args.language, args.gif_keywords, args.array)
+    options = parse_args(sys.argv[1:])
+    creator = MdCreator(options)
     creator.launch_creator()
     return 0
 

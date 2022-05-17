@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import configparser
 
-from sources.Prerequisites import c_plus_plus_prerequisites, python_prerequisites, c_prerequisites, haskell_prerequisites, \
-    no_prerequisites
+from sources.Prerequisites import c_plus_plus_prerequisites, python_prerequisites, c_prerequisites, haskell_prerequisites, no_prerequisites
 from dotenv import dotenv_values, load_dotenv, set_key, find_dotenv
 from sources.CodingStyle import c_style, haskell_style, no_style
 from sources.ApiLoader.ApiLoader import ApiLoader
@@ -51,7 +50,7 @@ class RangeError(Exception):
         Parameters
         ----------
         message : str
-            Message explaning the Range Error
+            Message explaining the Range Error
         """
         self.message = message
 
@@ -72,43 +71,45 @@ class MdCreator:
 
     Attributes
     ----------
+    template_name : str
+        Template's name the user wants to base its README on
     project : str
         Project's name
     gif_keywords : str
         String defining the gifs you're looking for
     language : str
         Project's main language
-    fileDesc : TextIOWrapper | None
+    file_desc : TextIOWrapper | None
         File descriptor describing the new README file descriptor
-    array_option : bool
+    array : bool
         Boolean telling if the user wants an array in its README file
-    student : bool
+    use_config : bool
         Boolean telling if the user is a student
-    apiLoader : ApiLoader
+    api_loader : ApiLoader
         Class making every Tenor's Api calls
     """
 
-    def __init__(self, project_name, project_language, gif_keywords, array_option):
+    def __init__(self, options):
         self._envPath = find_config(".env", os.getenv("HOME"))
         if self._envPath == "":
             print("mdCreator .env file must be located in the mdCreator directory.")
             exit(1)
-        self._envDict = dotenv_values(self._envPath)
-        self._envFile = find_dotenv()
-        load_dotenv(self._envFile)
+        self._env_dict = dotenv_values(self._envPath)
+        self._env_file = find_dotenv()
+        load_dotenv(self._env_file)
 
-        self.project = project_name
-        if gif_keywords is None:
-            self.gifAttr = ''
-        else:
-            self.gifAttr = gif_keywords
-        print(self.gifAttr)
-        self.language = project_language
-        self.fileDesc = None
-        self.array = array_option
+        self.project = options.project_name
+        self.gif_keywords = ''
+        if options.gif_keywords is not None:
+            self.gif_keywords = options.gif_keywords
+        self.language = options.language
+        self.file_desc = None
+        self.array = options.asked_array
+        self.template_name = options.template_name
 
-        self.student = False
-        self.apiLoader = ApiLoader(url="https://g.tenor.com/v1/search?", search=gif_keywords, limit=2)
+        if self.template_name is not None:
+            self.use_config = False
+        self.api_loader = ApiLoader(url="https://g.tenor.com/v1/search?", limit=5)
 
     # Main Loop
     def launch_creator(self) -> None:
@@ -119,23 +120,13 @@ class MdCreator:
         -------
         None
         """
-        index = 0
-
         self.check_existing()
         self.load_config()
-        if self.apiLoader.is_url_build():
-            self.fileDesc.write("## Asked GIFS\n\n")
-            gif_list = self.apiLoader.search_gifs()
-            while index < len(gif_list):
-                self.fileDesc.write(f'![Alt Text]({gif_list[index]})\n')
-                index += 1
-            self.fileDesc.write("\n")
+        self.get_gifs()
         if self.array is True:
             self.print_array()
-        self.fileDesc.write(
-            "\nThis README file has been created with mdCreator. [Please check the project by clicking this link.]("
-            "https://github.com/0Nom4D/mdCreator/)\n")
-        self.fileDesc.close()
+        self.file_desc.write("\nThis README file has been created with mdCreator. [Please check the project by clicking this link.](""https://github.com/0Nom4D/mdCreator/)\n")
+        self.file_desc.close()
         print("\nREADME.md created.")
         print("Don't forget to edit your README.md file if something's wrong with the existing file.")
         print("if any error occurs, please create an issue or contact Nom4D- | NMS#0811 on Discord.")
@@ -148,16 +139,18 @@ class MdCreator:
         -------
         None
         """
-        self.fileDesc.write("## Asked Array Template:\n\n\
-| Index1     | Index2        |\n\
-| ---------- |:-------------:|\n\
-| Key 1      | Opt1          |\n\
-| Key 2      | Opt2          |\n\
-| Key 3      | Opt3          |\n\
-| Key 4      | Opt4          |\n\
-| Key 5      | Opt5          |\n\
-| Key 6      | Opt6          |\n\
-| Key 7      | Opt7          |\n")
+        self.file_desc.write(
+            "## Asked Array Template:\n\n"
+            "| Index1     | Index2        |\n"
+            "|:----------:|:-------------:|\n"
+            "| Key 1      | Opt1          |\n"
+            "| Key 2      | Opt2          |\n"
+            "| Key 3      | Opt3          |\n"
+            "| Key 4      | Opt4          |\n"
+            "| Key 5      | Opt5          |\n"
+            "| Key 6      | Opt6          |\n"
+            "| Key 7      | Opt7          |\n"
+        )
 
     def check_existing(self) -> None:
         """
@@ -172,8 +165,8 @@ class MdCreator:
                 try:
                     value = input("README.md already exists. Do you want to create a new README.md file? [y/n] ")
                     if value == 'y':
-                        self.fileDesc = open("README.md", "w")
-                        self.fileDesc.truncate()
+                        self.file_desc = open("README.md", "w")
+                        self.file_desc.truncate()
                         break
                     elif value == 'n':
                         exit(1)
@@ -183,7 +176,7 @@ class MdCreator:
                     print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
                     exit(1)
         else:
-            self.fileDesc = open("README.md", "w")
+            self.file_desc = open("README.md", "w")
 
     # README.md Sections
     def load_config(self) -> None:
@@ -197,55 +190,42 @@ class MdCreator:
         def check_config_mode() -> None:
             input_value = None
 
-            if "CONFIGTYPE" in self._envDict and self._envDict["CONFIGTYPE"] in ['student', 'pro']:
+            if "CONFIGTYPE" in self._env_dict and self._env_dict["CONFIGTYPE"] in ['student', 'pro']:
                 return
             while input_value is None:
                 try:
                     input_value = input("For your next use, would you like to use the Student Configuration? [y/n] ")
                     if input_value == 'y':
-                        set_key(self._envFile, "CONFIGTYPE", 'student')
+                        set_key(self._env_file, "CONFIGTYPE", 'student')
                     elif input_value == 'n':
-                        set_key(self._envFile, "CONFIGTYPE", 'pro')
+                        set_key(self._env_file, "CONFIGTYPE", 'pro')
                     else:
                         continue
                 except KeyError:
                     print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
                     exit(1)
 
-        def get_api_key() -> None:
-            input_value = None
-
-            if "APIKEY" in self._envDict and self._envDict["APIKEY"] != '':
-                return
-            while input_value is None:
-                try:
-                    input_value = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
-                    set_key(self._envFile, 'APIKEY', input_value)
-                except KeyError:
-                    print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
-                    exit(1)
-
         check_config_mode()
-        if self.gifAttr != '':
-            get_api_key()
 
         # Refreshes Environment Values
-        self._envDict = dotenv_values(self._envPath)
+        self._env_dict = dotenv_values(self._envPath)
+        self.use_config = True
 
         # Loading mdCreator.json config file
         config_file = find_config("mdCreator.json", os.environ['HOME'])
-        config = open(config_file, "r")
-        cfg = json.load(config)
-        for section in cfg[self._envDict["CONFIGTYPE"]]:
-            self.write_section(cfg[self._envDict["CONFIGTYPE"]], section)
+        fd_config = open(config_file, "r")
+        config = json.load(fd_config)
+        for section in config[self._env_dict["CONFIGTYPE"]]:
+            self.write_section(config[self._env_dict["CONFIGTYPE"]], section)
+        fd_config.close()
 
-    def write_section(self, cfg, section: Union[str, Optional[str]]) -> Union[int, None]:
+    def write_section(self, config, section) -> Union[int, None]:
         """
         Write every section and checks the configuration.
 
         Parameters
         -------
-        cfg : list
+        config : list
             List of every sections present in the configuration file
         section : list
             List of every parameter of a section
@@ -257,18 +237,16 @@ class MdCreator:
         sec_range = 0
 
         try:
-            sec_range = cfg[section]["range"]
+            sec_range = config[section]["range"]
         except KeyError:
             sec_range = None
         if sec_range is None:
             if section == "gifs":
-                self.apiLoader.set_limit(int(cfg[section]["nbGifs"]))
-                self.apiLoader.build_url(self._envDict["APIKEY"])
                 return 0
             raise RangeError(f'Range is not set for {str(section)} section.')
-        return self.redirect_sections(sec_range, cfg, section)
+        return self.redirect_sections(sec_range, config, section)
 
-    def redirect_sections(self, sec_range, cfg, section) -> Union[int, None]:
+    def redirect_sections(self, sec_range, config, section) -> Union[int, None]:
         """
         Write the different README sections.
 
@@ -276,7 +254,7 @@ class MdCreator:
         -------
         sec_range : int
             Section range
-        cfg : list
+        config : list
             List of every sections present in the configuration file
         section : list
             List of every parameter of a section
@@ -288,21 +266,70 @@ class MdCreator:
         if sec_range < 1:
             raise RangeError(f'Range must be higher than 0 for {str(section)} section.')
         while sec_range != 0:
-            self.fileDesc.write("#")
+            self.file_desc.write("#")
             sec_range -= 1
         if section == "header":
-            self.fileDesc.write(f' {self.project}\n\n')
-        elif cfg[section]["title"] is not None:
-            self.fileDesc.write(f'{cfg[section]["title"]}\n\n')
+            self.file_desc.write(f' {self.project}\n\n')
+        elif config[section]["title"] is not None:
+            self.file_desc.write(f'{config[section]["title"]}\n\n')
         if section == "style":
             self.print_coding_style()
         elif section == "prerequisites":
             self.print_prerequisites()
-        elif cfg[section]["description"][0] == ' ':
-            self.fileDesc.write(f'{self.project}{cfg[section]["description"]}\n\n')
+        elif config[section]["description"][0] == ' ':
+            self.file_desc.write(f'{self.project}{config[section]["description"]}\n\n')
         else:
-            self.fileDesc.write(f'{cfg[section]["description"]}\n\n')
+            self.file_desc.write(f'{config[section]["description"]}\n\n')
         return 0
+
+    def ask_api_key(self) -> None:
+        """
+        Asks the user for its Tenor API Key
+
+        Returns
+        -------
+        None
+        """
+        input_value = None
+
+        if "APIKEY" in self._env_dict and self._env_dict["APIKEY"] != '':
+            return
+        while input_value is None:
+            try:
+                input_value = input("In order to make mdCreator work, you need to input your Tenor API Key.\nYou can get a tutorial to how to get one at https://github.com/0Nom4D/mdCreator/wiki/API-Key-Registration.\nYour API Key: ")
+                set_key(self._env_file, 'APIKEY', input_value)
+            except KeyError:
+                print(f"mdCreator Stopped - creator.py: l.{currentframe()}")
+                exit(1)
+
+    def get_gifs(self) -> None:
+        """
+        Setups GIF ApiLoader if the user uses the configuration mode and build the Tenor API route.
+
+        Returns
+        -------
+        None
+        """
+
+        def setup_gifs() -> None:
+            config_file = find_config("mdCreator.json", os.environ['HOME'])
+            fd_config = open(config_file, "r")
+            config = json.load(fd_config)
+            self.api_loader.set_limit(config[self._env_dict["CONFIGTYPE"]]["gifs"]["nbGifs"])
+            fd_config.close()
+
+        if self.gif_keywords != '':
+            self.ask_api_key()
+            self._env_dict = dotenv_values(self._envPath)
+            if self.use_config:
+                setup_gifs()
+            self.api_loader.build_url(self.gif_keywords, self._env_dict["APIKEY"])
+            if self.api_loader.is_url_build():
+                self.file_desc.write("## Asked GIFS\n\n")
+                gif_list = self.api_loader.get_gifs()
+                for gif in gif_list:
+                    self.file_desc.write(f'![Alt Text]({gif})\n')
+                self.file_desc.write("\n")
 
     def print_prerequisites(self) -> int:
         """
@@ -313,7 +340,7 @@ class MdCreator:
                     "c": c_prerequisites,
                     "python": python_prerequisites,
                     "haskell": haskell_prerequisites
-                }.get(self.language.lower(), no_prerequisites)(self.fileDesc))
+                }.get(self.language.lower(), no_prerequisites)(self.file_desc))
 
     def print_coding_style(self) -> int:
         """
@@ -322,4 +349,4 @@ class MdCreator:
         return ({
                     "c": c_style,
                     "haskell": haskell_style
-                }.get(self.language.lower(), no_style)(self.fileDesc, self.language, self.project))
+                }.get(self.language.lower(), no_style)(self.file_desc, self.language, self.project))
