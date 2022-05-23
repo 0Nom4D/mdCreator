@@ -26,10 +26,9 @@ def find_config(name, path) -> str:
     -------
     Returns the path to the file you're looking for
     """
-    for root, dirs, files in os.walk(path):
-        if name in files:
-            if "mdCreator" in os.path.join(root, name):
-                return os.path.join(root, name)
+    for root, _, files in os.walk(path):
+        if name in files and "mdCreator" in os.path.join(root, name):
+            return os.path.join(root, name)
     return ""
 
 
@@ -90,11 +89,11 @@ class MdCreator:
     """
 
     def __init__(self, options):
-        self._envPath = find_config(".env", os.getenv("HOME"))
-        if self._envPath == "":
+        self._env_path = find_config(".env", os.getenv("HOME"))
+        if self._env_path == "":
             print("mdCreator .env file must be located in the mdCreator directory.")
             exit(1)
-        self._env_dict = dotenv_values(self._envPath)
+        self._env_dict = dotenv_values(self._env_path)
         self._env_file = find_dotenv()
         load_dotenv(self._env_file)
 
@@ -125,11 +124,11 @@ class MdCreator:
         self.get_gifs()
         if self.array is True:
             self.print_array()
-        self.file_desc.write("\nThis README file has been created with mdCreator. [Please check the project by clicking this link.](""https://github.com/0Nom4D/mdCreator/)\n")
+        self.file_desc.write("\nThis README file has been created with mdCreator. [Please check the project by clicking this link.](https://github.com/0Nom4D/mdCreator/)\n")
         self.file_desc.close()
         print("\nREADME.md created.")
         print("Don't forget to edit your README.md file if something's wrong with the existing file.")
-        print("if any error occurs, please create an issue or contact Nom4D- | NMS#0811 on Discord.")
+        print("If any error occurs, please create an issue or contact Nom4D- | NMS#0811 on Discord.")
 
     def print_array(self) -> None:
         """
@@ -208,7 +207,7 @@ class MdCreator:
         check_config_mode()
 
         # Refreshes Environment Values
-        self._env_dict = dotenv_values(self._envPath)
+        self._env_dict = dotenv_values(self._env_path)
         self.use_config = True
 
         # Loading mdCreator.json config file
@@ -320,7 +319,7 @@ class MdCreator:
 
         if self.gif_keywords != '':
             self.ask_api_key()
-            self._env_dict = dotenv_values(self._envPath)
+            self._env_dict = dotenv_values(self._env_path)
             if self.use_config:
                 setup_gifs()
             self.api_loader.build_url(self.gif_keywords, self._env_dict["APIKEY"])
