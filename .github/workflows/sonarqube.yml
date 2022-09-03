@@ -20,3 +20,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: my-custom-directory
+          args: >
+            -Dsonar.projectKey=0Nom4D_mdCreator
+            -Dsonar.organization=0nom4d
