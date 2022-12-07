@@ -5,29 +5,26 @@ jobs:
     name: Test launch mdCreator
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2.2.2
+        uses: actions/setup-python@v2.3.3
         with:
-          python-version: 3.8
+          python-version: "3.10.8"
           token: ${{ github.token }}
+          check-latest: true
+          cache: "pip"
+      - run: python --version
 
-      - name: Install Python depedencies
+      - name: Install Python Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install python3-pip
-          sudo apt-get install python3-requests
-          python -m pip install requests
-          pip install requests
-          pip3 install requests
-          pip3 install python-dotenv
+          pip install -r requirements.txt
 
       - name: Run mdCreator
         run: |
           make re
           echo -ne 'y\ny' | ./mdCreator -p GithubActions -al C++
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3.1.1
         with:
-          path: |
-            ./README.md
+          path: ./README.md
